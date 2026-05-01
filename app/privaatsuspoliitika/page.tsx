@@ -7,67 +7,61 @@ export const metadata: Metadata = {
 
 export default function PrivaatsuspoliitikPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-16">
-      <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900 mb-8">
-        Privaatsuspoliitika
-      </h1>
+    <div className="bg-[--bg] min-h-screen">
+      <div className="max-w-2xl mx-auto px-4 py-14">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-ink-muted mb-3">Teave</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-ink tracking-tight mb-10">
+          Privaatsuspoliitika
+        </h1>
 
-      <div className="space-y-8 text-neutral-700 leading-relaxed">
-        <section>
-          <h2 className="text-xl font-semibold text-neutral-900 mb-3">Kogutavad andmed</h2>
-          <p>
-            Kogume ainult andmeid, mis on vajalikud tellimuse täitmiseks: nimi, aadress,
-            telefon, e-post. Muid isikuandmeid ei koguta ilma teie nõusolekuta.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold text-neutral-900 mb-3">Andmete kasutamine</h2>
-          <ul className="list-disc pl-5 space-y-1">
-            <li>Tellimuste töötlemine ja tarne</li>
-            <li>Klienditeenindus ja garantiijuhtumid</li>
-            <li>Uudiskirja saatmine (ainult nõusolekul)</li>
-            <li>Seadusest tulenevad kohustused</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold text-neutral-900 mb-3">Küpsised</h2>
-          <p>
-            Kasutame küpsiseid veebipoe toimimiseks ja kasutuskogemuse parandamiseks.
-            Analüütilisi küpsiseid kasutame ainult anonüümsete külastusstatistikate
-            kogumiseks.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold text-neutral-900 mb-3">Andmete jagamine</h2>
-          <p>
-            Me ei müü ega jaga teie isikuandmeid kolmandatele osapooltele, välja arvatud
-            tarneettevõtted (DPD, Omniva) ja makseteenuse pakkujad, kelle osalemine on
-            vajalik tellimuse täitmiseks.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold text-neutral-900 mb-3">Teie õigused</h2>
-          <p>
-            Teil on õigus tutvuda oma andmetega, neid parandada või kustutada. Võtke
-            ühendust aadressil{" "}
-            <a href="mailto:info@ponnipatrull.ee" className="text-orange-600 underline">
-              info@ponnipatrull.ee
-            </a>
-            .
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold text-neutral-900 mb-3">Andmete säilitamine</h2>
-          <p>
-            Säilitame isikuandmeid nii kaua, kui see on vajalik teenuste osutamiseks või
-            seadusest tulenevate kohustuste täitmiseks – üldjuhul kuni 7 aastat.
-          </p>
-        </section>
+        <div className="space-y-8 text-sm text-ink-secondary leading-relaxed">
+          {[
+            {
+              title: "Kogutavad andmed",
+              body: "Kogume ainult andmeid, mis on vajalikud tellimuse täitmiseks: nimi, aadress, telefon, e-post. Muid isikuandmeid ei koguta ilma teie nõusolekuta.",
+            },
+            {
+              title: "Andmete kasutamine",
+              list: [
+                "Tellimuste töötlemine ja tarne",
+                "Klienditeenindus ja garantiijuhtumid",
+                "Uudiskirja saatmine (ainult nõusolekul)",
+                "Seadusest tulenevad kohustused",
+              ],
+            },
+            {
+              title: "Küpsised",
+              body: "Kasutame küpsiseid veebipoe toimimiseks. Analüütilisi küpsiseid kasutame ainult anonüümsete külastusstatistikate kogumiseks.",
+            },
+            {
+              title: "Andmete jagamine",
+              body: "Me ei müü ega jaga teie isikuandmeid kolmandatele osapooltele, välja arvatud tarneettevõtted (DPD, Omniva) ja makseteenuse pakkujad.",
+            },
+            {
+              title: "Teie õigused",
+              body: "Teil on õigus tutvuda, parandada või kustutada oma andmeid. Võtke ühendust: info@ponnipatrull.ee.",
+            },
+            {
+              title: "Andmete säilitamine",
+              body: "Säilitame isikuandmeid nii kaua, kui see on vajalik — üldjuhul kuni 7 aastat.",
+            },
+          ].map((s) => (
+            <section key={s.title}>
+              <h2 className="text-sm font-semibold text-ink mb-2 uppercase tracking-wide">{s.title}</h2>
+              {s.body && <p>{s.body}</p>}
+              {s.list && (
+                <ul className="space-y-1.5 pl-4">
+                  {s.list.map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="mt-1.5 w-1 h-1 bg-ink-muted rounded-full shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -2,19 +2,19 @@ import Link from "next/link";
 
 export function PromoBar() {
   return (
-    <div className="bg-gradient-to-r from-red-600 to-red-500 text-white">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
-        <span className="text-sm font-medium">
-          🔥 <strong>Sooduspakkumine:</strong> Audi Q7 must — 265 € (oli 529 €) &nbsp;|&nbsp; Lamborghini Veneno — 390 € (oli 499 €)
-        </span>
+    <div className="bg-surface-subtle border-b border-ink-faint">
+      <div className="max-w-7xl mx-auto px-4 py-2.5 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
+        <p className="text-xs text-ink-secondary tracking-wide">
+          <span className="font-semibold text-ink">Sooduspakkumised:</span>
+          {" "}Audi Q7 must — <span className="font-medium">265 €</span> (oli 529 €)
+          {" "}·{" "}
+          Lamborghini Veneno — <span className="font-medium">390 €</span> (oli 499 €)
+        </p>
         <Link
-          href="/e-pood?badge=SOODUS"
-          className="inline-flex items-center gap-1 bg-white text-red-600 font-bold text-xs px-4 py-1.5 rounded-full hover:bg-red-50 transition-colors whitespace-nowrap"
+          href="/e-pood"
+          className="text-xs font-semibold text-accent hover:text-accent-hover underline underline-offset-2 transition-colors duration-150 whitespace-nowrap"
         >
-          Kasuta soodusat
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          Vaata soodusat →
         </Link>
       </div>
     </div>

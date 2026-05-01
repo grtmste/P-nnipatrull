@@ -7,22 +7,17 @@ import { Footer } from "@/components/Footer";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Põnnipatrull – Laste elektriautod ja ATV-d Eestis",
+    default: "Põnnipatrull – Laste elektriauto&shy;de ekspert Eestis",
     template: "%s | Põnnipatrull",
   },
   description:
     "Eesti suurim laste elektriautode ja ATV-de pood. Kiire tarne, garantii ja varuosad. Mercedes, Lamborghini, Can-Am ja palju muud.",
-  keywords: [
-    "laste elektriauto",
-    "laste ATV",
-    "elektriauto lastele",
-    "põnnipatrull",
-    "laste sõiduk",
-  ],
+  keywords: ["laste elektriauto", "laste ATV", "elektriauto lastele", "põnnipatrull"],
   openGraph: {
     siteName: "Põnnipatrull",
     locale: "et_EE",
@@ -36,20 +31,15 @@ export const metadata: Metadata = {
       },
     ],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="et" className={inter.variable}>
-      <body className="flex min-h-screen flex-col">
+      <body className="flex min-h-screen flex-col bg-[--bg] text-[--text]">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

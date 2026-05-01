@@ -9,36 +9,50 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: "#fff7ed",
-          100: "#ffedd5",
-          200: "#fed7aa",
-          300: "#fdba74",
-          400: "#fb923c",
-          500: "#f97316",
-          600: "#ea6a0a",
-          700: "#c2410c",
-          800: "#9a3412",
-          900: "#7c2d12",
+        accent: {
+          DEFAULT: "#14532d", // emerald-900 — deep forest green
+          hover:   "#166534", // emerald-800
+          muted:   "#d1fae5", // emerald-100
+          subtle:  "#f0fdf4", // emerald-50
         },
-        neutral: {
-          50: "#fafafa",
-          100: "#f5f5f5",
-          800: "#262626",
-          900: "#171717",
+        surface: {
+          DEFAULT: "#ffffff",
+          muted:   "#fafaf9", // stone-50
+          subtle:  "#f5f5f4", // stone-100
+        },
+        ink: {
+          DEFAULT: "#18181b", // zinc-900
+          secondary: "#52525b", // zinc-600
+          muted:     "#a1a1aa", // zinc-400
+          faint:     "#e4e4e7", // zinc-200
         },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       borderRadius: {
-        "2xl": "1rem",
-        "3xl": "1.5rem",
+        none: "0",
+        sm:   "2px",
+        DEFAULT: "4px",
+        md:   "6px",
+        lg:   "8px",
+        xl:   "10px",
+        "2xl": "12px",
+        // nothing larger — no pill/blob shapes
       },
       boxShadow: {
-        card: "0 2px 8px 0 rgba(0,0,0,0.06), 0 1px 2px 0 rgba(0,0,0,0.04)",
-        "card-hover":
-          "0 8px 32px 0 rgba(0,0,0,0.12), 0 2px 8px 0 rgba(0,0,0,0.06)",
+        card: "0 1px 3px 0 rgb(0 0 0 / 0.06)",
+        "card-hover": "0 4px 12px 0 rgb(0 0 0 / 0.09)",
+        subtle: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+      },
+      letterSpacing: {
+        tighter: "-0.03em",
+        tight:   "-0.02em",
+        snug:    "-0.01em",
+        normal:  "0",
+        wide:    "0.04em",
+        wider:   "0.08em",
+        widest:  "0.12em",
       },
     },
   },

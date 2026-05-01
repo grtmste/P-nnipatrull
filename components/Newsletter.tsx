@@ -8,63 +8,60 @@ export function Newsletter() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setSubmitted(true);
-    }
+    if (email) setSubmitted(true);
   };
 
   return (
-    <section className="bg-orange-600 py-16">
-      <div className="max-w-2xl mx-auto px-4 text-center text-white">
-        <div className="text-4xl mb-4">📬</div>
-        <h2 className="text-3xl sm:text-4xl font-bold mb-3">
-          Liitu uudiskirjaga
-        </h2>
-        <p className="text-orange-100 mb-8 text-lg">
-          Saa esimesena teada uutest toodetest, eripakkumistest ja
-          soodushindadest. Ainult relevantne sisu, rämpsposti mitte.
-        </p>
+    <section className="bg-ink py-16">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-xl">
+          <p className="text-xs font-medium tracking-widest uppercase text-white/30 mb-4">
+            Uudiskiri
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight mb-3">
+            Liitu uudiskirjaga
+          </h2>
+          <p className="text-sm text-white/50 mb-8 leading-relaxed">
+            Uued tooted, eripakkumised ja soodushinnad — otse su postkasti.
+            Saad tellimuse igal ajal tühistada.
+          </p>
 
-        {submitted ? (
-          <div className="bg-white/20 backdrop-blur rounded-2xl p-6 inline-flex items-center gap-3 text-white font-semibold">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            Suurepärane! Oled uudiskirjaga liitunud.
-          </div>
-        ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-          >
-            <label htmlFor="newsletter-email" className="sr-only">
-              Sinu e-posti aadress
-            </label>
-            <input
-              id="newsletter-email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="sinu@email.ee"
-              className="flex-1 px-5 py-3.5 rounded-xl text-neutral-900 placeholder:text-neutral-400 outline-none focus:ring-2 focus:ring-white/50"
-            />
-            <button
-              type="submit"
-              className="bg-neutral-900 hover:bg-neutral-800 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap"
-            >
-              Liitu
-            </button>
-          </form>
-        )}
+          {submitted ? (
+            <div className="flex items-center gap-2 text-white/70 text-sm">
+              <svg className="w-4 h-4 text-accent-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+              Liitunud. Aitäh!
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex gap-2">
+              <label htmlFor="nl-email" className="sr-only">E-posti aadress</label>
+              <input
+                id="nl-email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="sinu@email.ee"
+                className="flex-1 min-w-0 bg-white/5 border border-white/10 text-white placeholder:text-white/25 text-sm px-4 py-2.5 rounded-md outline-none focus:border-white/30 focus:bg-white/10 transition-colors duration-150"
+              />
+              <button
+                type="submit"
+                className="btn-accent shrink-0 px-5 py-2.5"
+              >
+                Liitu
+              </button>
+            </form>
+          )}
 
-        <p className="text-orange-200 text-xs mt-4">
-          Saad uudiskirja tellimuse igal ajal tühistada. Loe meie{" "}
-          <a href="/privaatsuspoliitika" className="underline hover:text-white">
-            privaatsuspoliitikat
-          </a>
-          .
-        </p>
+          <p className="text-[11px] text-white/25 mt-4">
+            Loe meie{" "}
+            <a href="/privaatsuspoliitika" className="underline underline-offset-2 hover:text-white/40 transition-colors duration-150">
+              privaatsuspoliitikat
+            </a>
+            .
+          </p>
+        </div>
       </div>
     </section>
   );

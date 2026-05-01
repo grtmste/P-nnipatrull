@@ -5,112 +5,91 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 export function Hero() {
-  const heroRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = heroRef.current;
+    const el = contentRef.current;
     if (!el) return;
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
-      el.style.opacity = "1";
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     el.style.opacity = "0";
-    el.style.transform = "translateY(20px)";
-    const raf = requestAnimationFrame(() => {
-      el.style.transition = "opacity 0.7s ease, transform 0.7s ease";
+    el.style.transform = "translateY(12px)";
+    const id = requestAnimationFrame(() => {
+      el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
       el.style.opacity = "1";
       el.style.transform = "translateY(0)";
     });
-    return () => cancelAnimationFrame(raf);
+    return () => cancelAnimationFrame(id);
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white min-h-[90vh] flex items-center">
-      {/* Background image overlay */}
-      <div className="absolute inset-0 opacity-20">
+    <section className="relative overflow-hidden bg-ink min-h-[88vh] flex items-center">
+      {/* Background — low opacity editorial image */}
+      <div className="absolute inset-0">
         <Image
           src="https://ponnipatrull.ee/wp-content/uploads/2026/01/DSC_5736-768x513.jpg"
           alt=""
           fill
-          className="object-cover"
+          className="object-cover object-center"
           priority
           aria-hidden="true"
         />
+        <div className="absolute inset-0 bg-ink/75" />
+        {/* subtle vignette */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/60 via-transparent to-transparent" />
       </div>
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/90 via-neutral-900/60 to-transparent" />
-
-      <div className="relative max-w-7xl mx-auto px-4 py-20 grid lg:grid-cols-2 gap-12 items-center w-full">
-        {/* Text */}
-        <div ref={heroRef}>
-          <div className="inline-flex items-center gap-2 bg-orange-600/20 border border-orange-500/30 rounded-full px-4 py-1.5 text-orange-300 text-sm font-medium mb-6">
-            <span className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
-            Laos &amp; kiirelt tarnitav
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-balance mb-6">
-            Laste{" "}
-            <span className="text-orange-400">elektriauto&shy;de</span> ekspert
-            Eestis
-          </h1>
-
-          <p className="text-lg text-neutral-300 leading-relaxed mb-8 max-w-lg">
-            Mercedes, Lamborghini, Can-Am, Willys – laias valikus premium
-            elektriauto&shy;sid, ATV-sid ja traktoreid lastele. Tarne 1–2
-            tööpäeva, garantii ja varuosad.
+      <div className="relative max-w-7xl mx-auto px-4 py-24 grid lg:grid-cols-2 gap-16 items-center w-full">
+        {/* Copy */}
+        <div ref={contentRef}>
+          {/* Eyebrow */}
+          <p className="text-xs font-medium tracking-widest uppercase text-white/50 mb-6">
+            Laste elektrisõidukid · Eesti laost
           </p>
 
-          <div className="flex flex-wrap gap-4">
-            <Link
-              href="/e-pood"
-              className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-500 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/25 hover:-translate-y-0.5"
-            >
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.07] tracking-tight mb-6 text-balance">
+            Premium sõidukid<br />
+            <span className="text-white/40">lastele.</span>
+          </h1>
+
+          <p className="text-base text-white/60 leading-relaxed mb-10 max-w-md">
+            Mercedes, Lamborghini, Can-Am ja rohkem — laias valikus laste
+            elektriauto&shy;sid ja ATV-sid. Tarne 1–2 tööpäeva, garantii, varuosad.
+          </p>
+
+          <div className="flex flex-wrap gap-3">
+            <Link href="/e-pood" className="btn-accent text-sm px-6 py-3">
               Vaata e-poodi
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
             <a
-              href="/#kontakt"
-              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-200 backdrop-blur-sm"
+              href="mailto:info@ponnipatrull.ee"
+              className="inline-flex items-center gap-2 border border-white/20 text-white/80 text-sm font-medium px-6 py-3 rounded-md hover:bg-white/5 hover:border-white/40 transition-colors duration-150"
             >
               Küsi nõu
             </a>
           </div>
 
-          {/* Trust badges */}
-          <div className="flex flex-wrap gap-6 mt-10 pt-8 border-t border-white/10">
+          {/* Micro trust */}
+          <div className="flex flex-wrap gap-6 mt-12 pt-8 border-t border-white/10">
             {[
-              { icon: "🚚", text: "Tarne 1–2 tp" },
-              { icon: "🛡️", text: "12 kuu garantii" },
-              { icon: "🔧", text: "Varuosad laos" },
-              { icon: "💳", text: "Järelmaks 0%" },
-            ].map((item) => (
-              <div key={item.text} className="flex items-center gap-2 text-sm text-neutral-300">
-                <span className="text-base">{item.icon}</span>
-                <span>{item.text}</span>
-              </div>
+              "Tarne 1–2 tööpäeva",
+              "12 kuu garantii",
+              "Varuosad laos",
+              "Järelmaks 0%",
+            ].map((t) => (
+              <span key={t} className="text-xs text-white/40 tracking-wide">
+                {t}
+              </span>
             ))}
           </div>
         </div>
 
-        {/* Hero image */}
-        <div className="hidden lg:block relative">
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/50">
+        {/* Feature card */}
+        <div className="hidden lg:block">
+          <div className="relative overflow-hidden rounded-lg shadow-[0_24px_64px_rgb(0,0,0,0.5)]">
             <Image
               src="https://ponnipatrull.ee/wp-content/uploads/2026/01/DSC_5883-768x513.jpg"
               alt="Laste elektriauto Mercedes G63"
@@ -119,19 +98,13 @@ export function Hero() {
               className="w-full h-auto object-cover"
               priority
             />
-            {/* Floating badge */}
-            <div className="absolute top-4 left-4 bg-orange-600 text-white text-sm font-bold px-4 py-2 rounded-xl shadow-lg">
-              LAOS
-            </div>
-            <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur rounded-2xl px-4 py-3 shadow-xl">
-              <p className="text-xs text-neutral-500 font-medium">alates</p>
-              <p className="text-2xl font-bold text-neutral-900">265 €</p>
+            {/* Overlay card */}
+            <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/70 to-transparent">
+              <p className="text-xs text-white/60 uppercase tracking-wider mb-1">Laos</p>
+              <p className="text-white font-medium text-sm">Mercedes G63 AMG XXL</p>
+              <p className="text-white text-xl font-semibold mt-0.5">750,00 €</p>
             </div>
           </div>
-
-          {/* Decorative elements */}
-          <div className="absolute -top-4 -right-4 w-24 h-24 bg-orange-500/20 rounded-full blur-xl" />
-          <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-orange-600/10 rounded-full blur-2xl" />
         </div>
       </div>
     </section>

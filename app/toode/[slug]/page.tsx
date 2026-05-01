@@ -16,21 +16,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) return { title: "Toode ei leitud" };
-  return {
-    title: product.title,
-    description: product.shortDescription,
-  };
+  return { title: product.title, description: product.shortDescription };
 }
 
-const badgeColors: Record<string, string> = {
-  LAOS: "bg-emerald-500",
-  SOODUS: "bg-red-500",
-  UUS: "bg-blue-500",
-};
-const badgeLabels: Record<string, string> = {
-  LAOS: "Laos",
-  SOODUS: "Soodus",
-  UUS: "Uus",
+const badgeConfig: Record<string, { label: string; cls: string }> = {
+  LAOS:   { label: "Laos",   cls: "bg-accent text-white" },
+  SOODUS: { label: "Soodus", cls: "bg-red-700 text-white" },
+  UUS:    { label: "Uus",    cls: "bg-ink text-white" },
 };
 
 export default async function ProductPage({ params }: Props) {
@@ -38,143 +30,149 @@ export default async function ProductPage({ params }: Props) {
   const product = getProductBySlug(slug);
   if (!product) notFound();
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-neutral-500 mb-8" aria-label="Leivapuru">
-        <Link href="/" className="hover:text-orange-600 transition-colors">Avaleht</Link>
-        <span>/</span>
-        <Link href="/e-pood" className="hover:text-orange-600 transition-colors">E-pood</Link>
-        <span>/</span>
-        <span className="text-neutral-900 font-medium line-clamp-1">{product.title}</span>
-      </nav>
+  const badge = product.badge ? badgeConfig[product.badge] : null;
 
-      <div className="grid lg:grid-cols-2 gap-12">
-        {/* Images */}
-        <div className="space-y-4">
-          <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-neutral-100 shadow-lg">
-            <Image
-              src={product.images[0]}
-              alt={product.title}
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-            {product.badge && (
-              <span
-                className={`absolute top-4 left-4 ${badgeColors[product.badge]} text-white text-sm font-bold px-4 py-1.5 rounded-full`}
-              >
-                {badgeLabels[product.badge]}
-              </span>
+  return (
+    <div className="bg-[--bg] min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 py-10">
+        {/* Breadcrumb */}
+        <nav
+          className="flex items-center gap-2 text-xs text-ink-muted mb-8"
+          aria-label="Leivapuru"
+        >
+          <Link href="/" className="hover:text-ink transition-colors duration-150">Avaleht</Link>
+          <span>/</span>
+          <Link href="/e-pood" className="hover:text-ink transition-colors duration-150">E-pood</Link>
+          <span>/</span>
+          <span className="text-ink-secondary line-clamp-1">{product.title}</span>
+        </nav>
+
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Images */}
+          <div className="space-y-2">
+            <div className="relative aspect-[4/3] overflow-hidden bg-surface border border-ink-faint">
+              <Image
+                src={product.images[0]}
+                alt={product.title}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+              {badge && (
+                <span className={`absolute top-3 left-3 ${badge.cls} text-[10px] font-semibold px-2 py-0.5 rounded-sm uppercase tracking-wider`}>
+                  {badge.label}
+                </span>
+              )}
+            </div>
+            {product.images.length > 1 && (
+              <div className="grid grid-cols-4 gap-2">
+                {product.images.map((img, i) => (
+                  <div
+                    key={i}
+                    className="relative aspect-square overflow-hidden bg-surface border border-ink-faint hover:border-ink/30 transition-colors duration-150 cursor-pointer"
+                  >
+                    <Image
+                      src={img}
+                      alt={`${product.title} ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="100px"
+                    />
+                  </div>
+                ))}
+              </div>
             )}
           </div>
-          {product.images.length > 1 && (
-            <div className="grid grid-cols-4 gap-3">
-              {product.images.map((img, i) => (
-                <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-neutral-100 cursor-pointer ring-2 ring-transparent hover:ring-orange-400 transition-all">
-                  <Image
-                    src={img}
-                    alt={`${product.title} ${i + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="100px"
-                  />
+
+          {/* Info */}
+          <div>
+            <h1 className="text-xl sm:text-2xl font-semibold text-ink tracking-tight mb-5 leading-snug">
+              {product.title}
+            </h1>
+
+            {/* Price */}
+            <div className="flex items-baseline gap-3 mb-6 pb-6 border-b border-ink-faint">
+              <span className="text-3xl font-semibold text-ink tracking-tight">{product.price}</span>
+              {product.compareAtPrice && (
+                <div>
+                  <span className="text-sm text-ink-muted line-through">{product.compareAtPrice}</span>
+                  <span className="ml-2 text-xs font-semibold text-red-700">Soodushind</span>
+                </div>
+              )}
+            </div>
+
+            <p className="text-sm text-ink-secondary leading-relaxed mb-6">
+              {product.shortDescription}
+            </p>
+
+            {/* Specs */}
+            <div className="mb-6">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-ink-muted mb-3">
+                Tehnilised andmed
+              </p>
+              <ul className="space-y-1.5">
+                {product.specs.map((spec) => (
+                  <li key={spec} className="flex items-center gap-2.5 text-sm text-ink-secondary">
+                    <span className="w-1 h-1 bg-accent rounded-full shrink-0" />
+                    {spec}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Trust micro */}
+            <div className="grid grid-cols-2 gap-2 mb-6">
+              {[
+                "Tarne 1–2 tööpäeva",
+                "12 kuu garantii",
+                "Varuosad laos",
+                "14 päeva tagastus",
+              ].map((t) => (
+                <div
+                  key={t}
+                  className="flex items-center gap-2 bg-surface border border-ink-faint px-3 py-2 text-xs text-ink-secondary"
+                >
+                  <span className="w-1 h-1 bg-ink-muted rounded-full shrink-0" />
+                  {t}
                 </div>
               ))}
             </div>
-          )}
+
+            {/* CTA */}
+            <div className="flex gap-2">
+              <a href="mailto:info@ponnipatrull.ee" className="btn-accent flex-1 justify-center py-3">
+                Telli nüüd
+              </a>
+              <a
+                href="tel:+37255555555"
+                className="btn-ghost flex-1 justify-center py-3"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                </svg>
+                Helista
+              </a>
+            </div>
+
+            <p className="text-[11px] text-ink-muted mt-4">
+              Küsimused? info@ponnipatrull.ee — vastame kiirelt.
+            </p>
+          </div>
         </div>
 
-        {/* Info */}
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-4 leading-tight">
-            {product.title}
-          </h1>
-
-          {/* Price */}
-          <div className="flex items-baseline gap-3 mb-6">
-            <span className="text-4xl font-bold text-neutral-900">{product.price}</span>
-            {product.compareAtPrice && (
-              <div className="flex flex-col">
-                <span className="text-sm text-neutral-400 line-through">
-                  oli {product.compareAtPrice}
-                </span>
-                <span className="text-sm font-semibold text-red-600">Soodushind</span>
-              </div>
-            )}
-          </div>
-
-          <p className="text-neutral-600 leading-relaxed mb-6">
-            {product.shortDescription}
-          </p>
-
-          {/* Specs */}
-          <div className="bg-neutral-50 rounded-2xl p-6 mb-6">
-            <h2 className="font-semibold text-neutral-900 mb-3">Tehnilised andmed</h2>
-            <ul className="space-y-2">
-              {product.specs.map((spec) => (
-                <li key={spec} className="flex items-center gap-2 text-sm text-neutral-600">
-                  <svg className="w-4 h-4 text-orange-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  {spec}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Trust badges */}
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {[
-              { icon: "🚚", text: "Tarne 1–2 tööpäeva" },
-              { icon: "🛡️", text: "12 kuu garantii" },
-              { icon: "🔧", text: "Varuosad laos" },
-              { icon: "↩️", text: "14 päeva tagastus" },
-            ].map((t) => (
-              <div key={t.text} className="flex items-center gap-2 bg-white border border-neutral-200 rounded-xl px-3 py-2.5 text-sm text-neutral-700">
-                <span>{t.icon}</span>
-                <span>{t.text}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href="mailto:info@ponnipatrull.ee"
-              className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-semibold text-center py-4 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              Telli nüüd
-            </a>
-            <a
-              href="tel:+37255555555"
-              className="flex-1 flex items-center justify-center gap-2 border border-neutral-300 hover:border-orange-400 text-neutral-700 hover:text-orange-600 font-semibold py-4 rounded-2xl transition-all duration-200"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              Helista
-            </a>
-          </div>
-
-          <p className="text-xs text-neutral-400 mt-4 text-center">
-            Küsimused? Kirjuta info@ponnipatrull.ee või helista. Vastame kiirelt.
-          </p>
+        {/* Back */}
+        <div className="mt-12 pt-8 border-t border-ink-faint">
+          <Link
+            href="/e-pood"
+            className="inline-flex items-center gap-1.5 text-sm text-ink-secondary hover:text-ink transition-colors duration-150"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Tagasi e-poodi
+          </Link>
         </div>
-      </div>
-
-      {/* Back to shop */}
-      <div className="mt-12 text-center">
-        <Link
-          href="/e-pood"
-          className="inline-flex items-center gap-2 text-neutral-500 hover:text-orange-600 transition-colors"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Tagasi e-poodi
-        </Link>
       </div>
     </div>
   );
